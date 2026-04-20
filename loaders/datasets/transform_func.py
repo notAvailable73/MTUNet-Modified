@@ -15,9 +15,8 @@ class Resize(object):
         self.interpolation = interpolation
 
     def __call__(self, image):
-        interp = self.interpolation.value if hasattr(self.interpolation, 'value') else self.interpolation
         size = (self.size, self.size) if isinstance(self.size, int) else tuple(reversed(self.size))
-        return np.array(image.resize(size, resample=interp))
+        return np.array(image.resize(size, resample=Image.Resampling.BILINEAR))
 
     def __repr__(self):
         return self.__class__.__name__ + '(size={0}, interpolation={1})'.format(self.size, self.interpolation)

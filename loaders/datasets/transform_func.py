@@ -1,24 +1,15 @@
 import torch
 from tools.image_aug import ImageAugment
 import torchvision.transforms.functional as F
+from torchvision.transforms import InterpolationMode
 from collections.abc import Sequence, Iterable
 import numpy as np
 from PIL import Image
 
 
-_pil_interpolation_to_str = {
-    Image.NEAREST: 'PIL.Image.NEAREST',
-    Image.BILINEAR: 'PIL.Image.BILINEAR',
-    Image.BICUBIC: 'PIL.Image.BICUBIC',
-    Image.LANCZOS: 'PIL.Image.LANCZOS',
-    Image.HAMMING: 'PIL.Image.HAMMING',
-    Image.BOX: 'PIL.Image.BOX',
-}
-
-
 class Resize(object):
     """class for resize images. """
-    def __init__(self, size, interpolation=Image.BILINEAR):
+    def __init__(self, size, interpolation=InterpolationMode.BILINEAR):
         assert isinstance(size, int) or (isinstance(size, Iterable) and len(size) == 2)
         self.size = size
         self.interpolation = interpolation
@@ -27,8 +18,7 @@ class Resize(object):
         return np.array(F.resize(image, self.size, self.interpolation))
 
     def __repr__(self):
-        interpolate_str = _pil_interpolation_to_str[self.interpolation]
-        return self.__class__.__name__ + '(size={0}, interpolation={1})'.format(self.size, interpolate_str)
+        return self.__class__.__name__ + '(size={0}, interpolation={1})'.format(self.size, self.interpolation)
 
 
 class Aug(object):
